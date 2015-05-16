@@ -9,7 +9,12 @@ from django.views.generic.list import ListView
 from .forms import UserCreationForm
 from .models import User
 
-# Create your views here.
+def logout_view(request):
+    print 'start'
+    logout(request)
+    print 'done'
+    return HttpResponseRedirect(reverse('home'))
+
 class LoginView(View):
     template_name = 'accounts/login.html'
     def get(self,request):
@@ -44,6 +49,6 @@ class UserCreateView(View):
 class RestuarantListView(View):
     template_name = 'accounts/restuarant_list.html'
     def get(self, request):
-        restuarants = User.objects.filter(is_restuarant=True)
-        context = {'restuarants' : restuarants}
+        rests = User.objects.filter(is_restuarant=True)
+        context = {'rests' : rests}
         return render(request, self.template_name, context)

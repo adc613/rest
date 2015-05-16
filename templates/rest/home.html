@@ -2,11 +2,26 @@
 
 <form method="post" action="{% url 'accounts:login' %}">
     {% csrf_token %}
+    <h4>Login</h4>
     <input type="email" name="username">
     <input type="password" name="password">
-    <button type="submit">Submit</button>
+    <button type="submit">Login</button>
 </form>
 
 {% if user.is_authenticated %}
-<h2>Your cool</h2>
+{% if user.is_restuarant %}
+<h2>Your logged in</h2>
+<ul>
+    <li><a href="{% url 'menus:create_menu_item' menu_pk=1 %}">Add Item to Menu </a></li>
+    <li><a href="{% url 'menus:create_menu' %}">Create Menu</a></li>
+    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+</ul>
+{% else %}
+<ul>
+    <li><a href="{% url 'accounts:restuarant_list' %}">List of Resaurants</a></li>
+    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+</ul>
+{% endif %}
+{% else %}
+<a href="{% url 'accounts:create_user' %}">Create User</a>
 {% endif %}

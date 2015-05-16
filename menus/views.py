@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from .forms import MenuCreationForm, MenuItemCreationForm
-from .models import Menu
+from .models import Menu, MenuItem
 
 class CreateMenuView(View):
     template_name='menus/create_menu.html'
@@ -59,4 +59,11 @@ class CreateMenuItemView(View):
 
         return HttpResponseRedirect(reverse('home'))
         
-
+class MenuItemListView(View):
+    template_name = 'menus/menu_item_list.html'
+    def get(self, request, **kwargs):
+        menu_pk = kwargs['menu_pk']
+        print 'life'
+        print menu_pk
+        items = MenuItem.objects.filter(menu__pk = menu_pk)
+        return render(request, self.template_name, {'items':items})

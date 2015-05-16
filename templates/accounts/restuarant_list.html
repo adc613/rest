@@ -1,4 +1,4 @@
 <h1>Restuarats in Your Area</h1>
-{% for rest in restuarants %}
-<a href="#">{{ rest.title }}</a>
+{% for rest in rests %}
+<a href="{{ rest.get_absolute_url }}">{{ rest.first_name}}</a>
 {% endfor %}

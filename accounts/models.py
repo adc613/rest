@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.core.urlresolvers import reverse
+from django.db import models
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password, first_name='Jane', last_name='Doe'):
@@ -51,6 +52,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name():
         return self.first_name
+
+    def get_absolute_url(self):
+        menus = self.menu.all()
+        if menus:
+            menu = menus[0]
+            return menu.get_absolute_url()
+        else:
+            return reverse('home')
 
 class Restuarant(User):
     pass
