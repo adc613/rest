@@ -1,0 +1,12 @@
+<h1>Hello World</h1>
+
+<form method="post" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
+    <input type="email" name="username">
+    <input type="password" name="password">
+    <button type="submit">Submit</button>
+</form>
+
+{% if user.is_authenticated %}
+<h2>Your cool</h2>
+{% endif %}

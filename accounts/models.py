@@ -37,9 +37,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=32) 
     last_name = models.CharField(max_length=32) 
-    is_active = models.BooleanField(default=False)
-    is_superuser = False
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_restuarant = models.BooleanField(default=False)
+    is_superuser = False
 
     USERNAME_FIELD = 'email'
 
@@ -50,3 +51,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name():
         return self.first_name
+
+class Restuarant(User):
+    pass

@@ -1,0 +1,6 @@
+<h1> Menu: {{ menu.title }} </h1>
+<form method="post" action="{% url 'menus:create_menu_item' menu_pk=menu.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>

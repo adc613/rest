@@ -4,8 +4,10 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import View
+from django.views.generic.list import ListView
 
 from .forms import UserCreationForm
+from .models import User
 
 # Create your views here.
 class LoginView(View):
@@ -38,3 +40,10 @@ class UserCreateView(View):
 
         messages.error(request, "didn't work bitch")
         return HttpResponseRedirect(reverse('home'))
+
+class RestuarantListView(View):
+    template_name = 'accounts/restuarant_list.html'
+    def get(self, request):
+        restuarants = User.objects.filter(is_restuarant=True)
+        context = {'restuarants' : restuarants}
+        return render(request, self.template_name, context)
