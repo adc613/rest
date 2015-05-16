@@ -21,3 +21,15 @@ class OrderForm(forms.ModelForm):
     def clean_resturant(self):
         if restuarant.is_resturanat:
             raiseforms.ValidationError('Resturant is not a resturant')
+
+    def save(self, commit=True):
+        food_cost = 0
+        order = super(OrderForm, self).save(commit=False)
+        items = order.ordered_item.all()
+        for item in items:
+            food_cost += menu_item.price
+        order.total_cost = food_cost + order.tip
+       if commit:
+           return order.save()
+       return order
+
