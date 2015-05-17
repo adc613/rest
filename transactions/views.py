@@ -24,7 +24,7 @@ class CreateOrderView(View):
     def post(self, request):
         form = CreateOrderForm(request.POST)
         if form.is_valid() and request.user.is_restuarant:
-            form.save(commit=False)
+            form = form.save(commit=False)
             form.restuarant = request.user
             form.save()
         return HttpResponseRedirect(reverse('home'))
