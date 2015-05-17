@@ -4,20 +4,21 @@ from django.db import models
 class OrderItem(models.Model):
     menu_item = models.ForeignKey('menus.MenuItem')
     order = models.ForeignKey('transactions.Order', 
-            related_name='ordered_item')
+            related_name='items')
     extras = models.TextField()
    
 class Order(models.Model):
     orderer = models.ForeignKey('accounts.User')
-    waiter = models.ForeignKey('accounts.User')
-    restuarant = models.ForeignKey('account.User')
-    tip = models.DecimalField(max_digits=6, decimal_places=2)
+    waiter = models.ForeignKey('accounts.User', related_name='waiter')
+    restuarant = models.ForeignKey('accounts.User',
+            related_name='orders', null=True)
+    tip = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     cost_of_food = models.DecimalField(max_digits=6, decimal_places=2,
-            blank=True)
+            null=True)
     total_cost = models.DecimalField(max_digits=6, decimal_places=2, 
-            blank=True)
+            null=True)
 
 class Reservation(models.Model):
     time = models.DateTimeField()
     restuarant = models.ForeignKey('accounts.User')
-    reservee = models.ForeignKey('accounts.User', related_name='reservee')
+    creator = models.ForeignKey('accounts.User', related_name='reservators')

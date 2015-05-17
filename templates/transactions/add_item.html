@@ -1,0 +1,10 @@
+<h1>Add Item To Order</h1>
+{% for item in items %}
+{{ forloop.counter }}
+{% endfor %}
+
+<form method="post" action="{% url 'transactions:add_item' pk=order.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>

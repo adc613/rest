@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^menu/', include('menus.urls', namespace='menus')),
+    url(r'^transactions/', include('transactions.urls',
+        namespace='transactions')),
     url('^$', views.HomeView.as_view(), name='home'),
 ]

@@ -1,0 +1,7 @@
+<h1>Check In Customer</h1>
+
+<form method="post" action="{% url 'transactions:create_order' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
