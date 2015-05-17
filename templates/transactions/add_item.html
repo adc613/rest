@@ -3,7 +3,12 @@
 {{ forloop.counter }}
 {% endfor %}
 
+
 <form method="post" action="{% url 'transactions:add_item' pk=order.pk %}">
+{% for item in menu_items %}
+<label><input type="radio" name="menu_item"  value="{{ item.pk }}">{{item.title}}</label>
+{% endfor %}
+
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>

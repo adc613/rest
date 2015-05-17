@@ -6,7 +6,7 @@ class MenuItem(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
-    menu = models.ForeignKey('menus.Menu')
+    menu = models.ForeignKey('menus.Menu', related_name='items')
 
 class Menu(models.Model):
     restuarant = models.ForeignKey('accounts.User', related_name='menu')
