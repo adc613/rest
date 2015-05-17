@@ -10,6 +10,7 @@ import decimal
 
 from .forms import CreateOrderForm, OrderItemCreationForm, CreateReservationForm
 from .models import Order
+from accounts.models import User
 from menus.models import MenuItem
 
 class CreateOrderView(View):
@@ -127,9 +128,22 @@ class CreateReservationView(View):
         print 'start'
         if reservation.is_valid():
             user = request.user
+            rest = User.objects.get(pk=kwargs['pk'])
+            print kwargs['pk']
+            print rest
             r = reservation.save(commit=False)
             r.creator = user
+            r.restuarant = rest
             r.save()
             print 'success'
 
         return HttpResponseRedirect(reverse('home'))
+
+class ReservationListView(View):
+    template_name = 'transactions/reservation_list.html'
+    def get(self, request):
+        rest = request.user
+        reservations = rest.reservations.all()
+        context = {}
+        context['reservations'] = reservations
+        return render(request, self.template_name, context)

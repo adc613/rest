@@ -21,5 +21,6 @@ class Order(models.Model):
 class Reservation(models.Model):
     time = models.DateTimeField()
     restuarant = models.ForeignKey('accounts.User',
-            limit_choices_to={'is_restuarant' : True})
+            limit_choices_to={'is_restuarant' : True},
+            related_name='reservations')
     creator = models.ForeignKey('accounts.User', related_name='reservators')

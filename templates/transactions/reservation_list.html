@@ -1,0 +1,8 @@
+<h1>Upcoming Resrevations</h1>
+<ul>
+    {% for reservation in reservations %}
+    <li>{{ reservation.creator.last_name }} at {{ reservation.time }} </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'home' %}">Go Home</a>

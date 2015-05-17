@@ -10,4 +10,6 @@ urlpatterns = [
         name='complete'),
     url(r'^createreservation/(?P<pk>\d+)', views.CreateReservationView.as_view(),
         name='create_reservation'),
+    url(r'^UpcominReservationsP/', views.ReservationListView.as_view(),
+        name='reservation_list'),
 ]

@@ -8,7 +8,7 @@ class CreateReservationForm(forms.ModelForm):
     
     class Meta:
         model = Reservation
-        fields = ['time','restuarant']
+        fields = ['time',]
         widgets = {
             'time': DateTimeWidget(attrs={'id':"yourdatetimeid"}, 
             usel10n = True, bootstrap_version=3)
