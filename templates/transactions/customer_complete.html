@@ -1,0 +1,12 @@
+<h1>Complete Transactions</h1>
+<h2>Total Cost: {{ food_cost }}</h2>
+<h2> Tip Amount</h2>
+
+<form method="post" action="{% url 'transactions:complete' pk=order.pk %}">
+    {% csrf_token %}
+    <label><input type="radio" name="percent"  value=".15">15%</label>
+    <label><input type="radio" name="percent"  value=".20">20%</label>
+    <label><input type="radio" name="percent"  value=".25">25%</label>
+    <button type="submit">Complete</button>
+</form>
+

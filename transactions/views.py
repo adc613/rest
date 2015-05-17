@@ -2,8 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+
+import decimal
 
 from .forms import CreateOrderForm, OrderItemCreationForm
 from .models import Order
@@ -61,9 +64,14 @@ class OrderListView(View):
     template_name = "transactions/order_list.html"
     def get(self, request):
         user = request.user
-        orders = Order.objects.filter(restuarant__pk=user.pk)
-        context = {'orders':orders}
-        return render(request, self.template_name, context)
+        if user.is_restuarant:
+            orders = Order.objects.filter(restuarant__pk=user.pk)
+            context = {'orders':orders}
+            return render(request, self.template_name, context)
+        else:
+            order = Order.objects.filter(orderer__pk=user.pk)[0]
+            return HttpResponseRedirect(reverse('transactions:complete',
+                kwargs={'pk':order.pk}))
 
 class CompleteOrderView(View):
     template_name = 'transactions/customer_complete.html'
@@ -72,35 +80,54 @@ class CompleteOrderView(View):
         order = Order.objects.get(pk=kwargs['pk'])
         items = order.items.all()
         context['items'] = items
+        food_cost = decimal.Decimal(0)
         for item in items:
-            food_cost += item.price
+            food_cost = food_cost + item.menu_item.price
         context['food_cost'] = food_cost
+        context['order'] = order
         return render(request, self.template_name,context)
 
-    def post(self, request, **kwwargs):
+    def post(self, request, **kwargs):
         order = Order.objects.get(pk=kwargs['pk'])
         if order.orderer == request.user:
+            percent = decimal.Decimal(0.0)
+            amount = decimal.Decimal(0.0)
+            tip = decimal.Decimal(0.0)
+            food_cost = decimal.Decimal(0)
             try:
                percent = request.POST['tip_percent']
-            except MultiValueKey:
+            except MultiValueDictKeyError:
                 pass
             try:
                amount = request.POST['tip_dollar']
-            except MultiValueKey:
+            except MultiValueDictKeyError:
                 pass
             items = order.items.all()
-            food_cost = 0
             for item in items:
-                food_cost += item.price
+                food_cost += item.menu_item.price
             if percent:
                 tip = (food_cost * percent)
             elif amount:
                 tip = amount
             else:
-                tip = food_cost * .20
+                tip = food_cost * decimal.Decimal(.20)
             total_cost = food_cost + tip
-            order.food_cost = food_cost
+            order.cost_of_food = food_cost
             order.tip = tip
             order.total_cost = total_cost
+            order.save()
+            print 'success'
         
+        return HttpResponseRedirect(reverse('home'))
+
+class CreateReservationView(View):
+    
+    def post(self, request, **kwargs):
+        reservation = CreateReservationForm(request.POST) 
+        if reservation.is_valid():
+            user = request.user
+            r = reservation.save()
+            r.creator = user
+            r.save()
+
         return HttpResponseRedirect(reverse('home'))

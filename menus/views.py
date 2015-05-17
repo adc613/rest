@@ -7,6 +7,7 @@ from django.views.generic import View
 
 from .forms import MenuCreationForm, MenuItemCreationForm
 from .models import Menu, MenuItem
+from transactions.forms import CreateReservationForm
 
 class CreateMenuView(View):
     template_name='menus/create_menu.html'
@@ -66,4 +67,10 @@ class MenuItemListView(View):
         print 'life'
         print menu_pk
         items = MenuItem.objects.filter(menu__pk = menu_pk)
-        return render(request, self.template_name, {'items':items})
+        menu = Menu.objects.get(pk = menu_pk)
+        pk = menu.restuarant.pk
+        context = {}
+        context['items'] = items
+        context['form'] = CreateReservationForm
+        context['pk'] = pk 
+        return render(request, self.template_name, context)

@@ -3,3 +3,10 @@
 <h3> {{item.title}} </h3>
 <p> {{ item.description }} </p>
 {% endfor %}
+<h2>Create Reservation</h2>
+
+<form method="post" action="{% url 'transactions:create_reservation' pk=pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Reservation</button>
+</form>
