@@ -8,7 +8,7 @@ from django.views.generic import View
 
 import decimal
 
-from .forms import CreateOrderForm, OrderItemCreationForm
+from .forms import CreateOrderForm, OrderItemCreationForm, CreateReservationForm
 from .models import Order
 from menus.models import MenuItem
 
@@ -124,10 +124,12 @@ class CreateReservationView(View):
     
     def post(self, request, **kwargs):
         reservation = CreateReservationForm(request.POST) 
+        print 'start'
         if reservation.is_valid():
             user = request.user
-            r = reservation.save()
+            r = reservation.save(commit=False)
             r.creator = user
             r.save()
+            print 'success'
 
         return HttpResponseRedirect(reverse('home'))

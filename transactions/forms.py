@@ -1,5 +1,7 @@
 from django import forms
 
+from datetimewidget.widgets import DateTimeWidget
+
 from .models import Reservation, Order, OrderItem
 
 class CreateReservationForm(forms.ModelForm):
@@ -7,6 +9,10 @@ class CreateReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ['time','restuarant']
+        widgets = {
+            'time': DateTimeWidget(attrs={'id':"yourdatetimeid"}, 
+            usel10n = True, bootstrap_version=3)
+            }
 
 class CreateOrderForm(forms.ModelForm):
     

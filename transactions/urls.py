@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^list/', views.OrderListView.as_view(), name='order_list'),
     url(r'^complete/(?P<pk>\d+)', views.CompleteOrderView.as_view(), 
         name='complete'),
-    url(r'^createreservation/(?P<pk>\d+)', views.CompleteOrderView.as_view(),
+    url(r'^createreservation/(?P<pk>\d+)', views.CreateReservationView.as_view(),
         name='create_reservation'),
 ]
